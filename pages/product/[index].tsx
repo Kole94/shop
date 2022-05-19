@@ -14,7 +14,12 @@ const Product = () => {
       <p>Product: {router.query.index}</p>
       <p>add comment</p>
       <Input onChange={(e: any) => setComment(e.target.value)} />
-      <Button onClick={() => data.push(comment)} />
+      <Button
+        onClick={() => {
+          let product = data[Number(router.query.index)];
+          data.push(comment);
+        }}
+      />
     </>
   );
 };

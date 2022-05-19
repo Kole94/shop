@@ -1,4 +1,5 @@
-import { Table, Tag, Space } from "antd";
+import { Table as AntTable, Tag, Space } from "antd";
+import Link from "next/link";
 import Product from "../../models/product";
 import data from "../../public/data";
 const columns = [
@@ -7,14 +8,13 @@ const columns = [
     dataIndex: "name",
     key: "name",
     render: (text: any, index: any) => {
-      //   debugger;
-      return <a href={`/product/${index.id}`}>{text}</a>;
+      return <Link href={`/product/${index.key}`}>{text}</Link>;
     },
   },
   {
-    title: "Desciption",
-    dataIndex: "desciption",
-    key: "desciption",
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
   },
   {
     title: "Price",
@@ -23,4 +23,17 @@ const columns = [
   },
 ];
 
-export default () => <Table columns={columns} dataSource={data} />;
+const Table = (props: any) => {
+  debugger;
+  return (
+    <AntTable
+      {...props}
+      columns={columns}
+      dataSource={props.data}
+      pagination={false}
+      scroll={{ x: 2000, y: 500 }}
+      bordered
+    />
+  );
+};
+export default Table;

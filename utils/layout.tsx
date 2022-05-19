@@ -7,7 +7,7 @@ const layout = (layoutJson: Layout[]) => {
       case "input":
         return (
           <div key={index}>
-            <Input />
+            <Input onChange={(e: any) => element?.onChange(e)} />
           </div>
         );
 

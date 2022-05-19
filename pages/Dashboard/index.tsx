@@ -1,43 +1,19 @@
 import Product from "../../models/product";
 import layout from "../../utils/layout";
-import { Col, Table } from "../../components";
-const products: Product[] = [
-  {
-    name: "Username",
-    desciption: "input",
-    price: 3,
-  },
-  {
-    name: "Username",
-    desciption: "password",
-    price: 10,
-  },
-  {
-    name: "Email",
-    desciption: "email",
-    price: 123,
-  },
-  {
-    name: "Login",
-    desciption: "",
-    price: 32,
-  },
-];
+import { Col, Table, Button } from "../../components";
+import { shallowEqual, useSelector } from "react-redux";
+import { store } from "../../redux/store";
+import Link from "next/link";
 
 const Dashboard = () => {
-  const layout = () => {};
+  const selectedData = useSelector((store: any) => {
+    // debugger;
+    return store.data.product;
+  });
+  // debugger;
   return (
     <Col>
-      <Table />
-      {products.map((element) => {
-        return (
-          <div>
-            <p>{element.name}</p>
-            <p>{element.desciption}</p>
-            <p>{element.price}</p>
-          </div>
-        );
-      })}
+      <Table data={selectedData} />
     </Col>
   );
 };

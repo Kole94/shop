@@ -1,7 +1,7 @@
 export default interface Product {
-  id: number;
+  key: number;
   name: string;
-  desciption: string;
+  description: string;
   price: number;
   comments?: string[];
 }

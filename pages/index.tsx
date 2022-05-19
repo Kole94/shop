@@ -2,9 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import Dashboard from "./Dashboard";
 
 const Home: NextPage = () => {
-  return <div className={styles.container}></div>;
+  return <div className={styles.container}>{/* <Dashboard /> */}</div>;
 };
 
 export default Home;
