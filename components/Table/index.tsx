@@ -24,7 +24,6 @@ const columns = [
 ];
 
 const Table = (props: any) => {
-  debugger;
   return (
     <AntTable
       {...props}

@@ -6,22 +6,22 @@ const layout = (layoutJson: Layout[]) => {
     switch (element.component) {
       case "input":
         return (
-          <div key={index}>
-            <Input onChange={(e: any) => element?.onChange(e)} />
+          <div className="layout-div" key={index}>
+            <Input {...element} />
           </div>
         );
 
       case "select":
         return (
-          <div key={index}>
+          <div className="layout-div" key={index}>
             <Select />
           </div>
         );
 
       case "button":
         return (
-          <div key={index}>
-            <Button />
+          <div className="layout-div" key={index}>
+            <Button {...element} />
           </div>
         );
     }

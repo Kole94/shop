@@ -2,57 +2,58 @@ import Layout from "../../models/layout";
 import layout from "../../utils/layout";
 import { Col, Input, Button, Select, Form } from "../../components";
 import { useForm } from "react-hook-form";
+import { store } from "../../redux/store";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { authSlice } from "../../slices/authSlice";
 
 const Register = () => {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
-  const isValidEmail = (email: any) =>
-    // eslint-disable-next-line no-useless-escape
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      email
-    );
+  const router = useRouter();
+
   const layoutJson: any = [
     {
-      name: "Username",
+      name: "Name",
       type: "input",
       component: "input",
+      className: "mt-2 login-input",
     },
     {
-      name: "Username",
+      name: "Password",
       type: "password",
       component: "input",
+      className: "mt-2 login-input",
     },
     {
       name: "Email",
       type: "email",
       component: "input",
-      pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      className: "mt-2 login-input",
+      pattern:
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
-    {
-      name: "Name",
-      type: "input",
-      component: "input",
-    },
+
     {
       name: "Lastname",
       type: "password",
       component: "input",
+      className: "mt-2 login-input",
     },
     {
       name: "Address",
       type: "input",
       component: "input",
+      className: "mt-2 login-input",
     },
     {
       name: "Phone",
       type: "password",
       component: "input",
+      className: "mt-2 login-input",
     },
     {
       name: "UserType",
@@ -64,70 +65,78 @@ const Register = () => {
       name: "Login",
       type: "",
       component: "button",
+      className: "mt-2 login-input login-btn",
     },
   ];
-  console.log(errors);
+
+  const isOn = useSelector((state: any) => state.authSlice.register);
+  console.log(isOn);
+
+  const dispatch = useDispatch();
+  const onSubmit = (data: any) => {
+    dispatch(
+      authSlice.actions.register({
+        username: data.Username,
+        password: data.Password,
+        phone: data.Phone,
+        address: data.Address,
+        email: data.Email,
+        name: data.Name,
+        lastname: data.Lastname,
+      })
+    );
+  };
+
   return (
-    <Col>
+    <div className="login">
       <form onSubmit={handleSubmit(onSubmit)}>
-        {layoutJson.map((element: any, index: any) => {
-          switch (element.component) {
-            case "input":
-              return (
-                <Col key={index}>
-                  <input
-                    {...register(`${element.name}`, {
-                      required: "molimo vas da popunite polje",
-                      pattern: {
-                        value: element.pattern,
-                        message: "neispravna email adresa",
-                      },
-                    })}
-                  />
-                  {errors[`${element.name}`] && (
-                    <span>{errors[`${element.name}`].message}</span>
-                  )}
-                </Col>
-              );
-
-            case "select":
-              return (
-                <div key={index}>
-                  <select
-                    // option={element.options}
-                    // {...(register(`${element.name}`), { required: true })}
-
-                    {...register(`${element.name}`, {
-                      required: "molimo vas da popunite polje",
-                    })}
-                  >
-                    {/* {element.options.map((e: any, index: number) => (
-                      <option key={index} value={e}>
-                        {e}
-                      </option>
-                    ))} */}
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
-                  </select>
-                  {errors[`${element.name}`] && (
-                    <span>{errors[`${element.name}`].message}</span>
-                  )}
-                </div>
-              );
-
-            case "button":
-              return (
-                <div key={index}>
-                  <input type="submit" onClick={() => console.log(errors)} />
-                  {errors.exampleRequired && (
-                    <span>This field is required</span>
-                  )}
-                </div>
-              );
-          }
-        })}
+        <Col>
+          {layoutJson.map((element: any, index: any) => {
+            switch (element.component) {
+              case "input":
+                return (
+                  <div className="layout-div" key={index}>
+                    <input
+                      {...element}
+                      placeholder={element.name}
+                      className={`${element.className} ${
+                        errors[`${element.name}`] ? "red-border" : null
+                      }`}
+                      {...register(`${element.name}`, {
+                        required: "molimo vas da popunite polje",
+                        pattern: {
+                          value: element.pattern,
+                          message: "neispravna email adresa",
+                        },
+                      })}
+                    />
+                    {errors[`${element.name}`] && (
+                      <span className="ml-1 red">
+                        {errors[`${element.name}`].message}
+                      </span>
+                    )}
+                  </div>
+                );
+              case "button":
+                return (
+                  <div className="layout-div" key={index}>
+                    <input
+                      {...element}
+                      type="submit"
+                      // onClick={() => {
+                      // dispatch(authSlice.actions.register({}));
+                      // }}
+                    />
+                    {errors.exampleRequired && (
+                      <span className="ml-1 red">This field is required</span>
+                    )}
+                  </div>
+                );
+            }
+          })}
+        </Col>
       </form>
-    </Col>
+    </div>
   );
 };
 
