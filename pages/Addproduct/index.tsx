@@ -3,19 +3,19 @@ import { store } from "../../redux/store";
 
 import { Button, Col } from "../../components";
 import { useState } from "react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { productSlice } from "../../slices/productSlice";
+import { useDispatch } from "react-redux";
 
 const Addproduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm();
   const router = useRouter();
@@ -25,21 +25,21 @@ const Addproduct = () => {
       name: "name",
       type: "input",
       component: "input",
-      onChange: (e: any) => setName(e.target.value),
+      // onChange: (e: any) => setName(e.target.value),
     },
     {
       name: "description",
       type: "input",
       component: "input",
-      onChange: (e: any) => setDescription(e.target.value),
+      // onChange: (e: any) => setDescription(e.target.value),
     },
     {
       name: "price",
-      type: "number",
+      type: "input",
       component: "input",
-      onChange: (e: any) => {
-        setPrice(e.target.value);
-      },
+      // onChange: (e: any) => {
+      //   setPrice(e.target.value);
+      // },
     },
     {
       name: "Add",
@@ -47,54 +47,64 @@ const Addproduct = () => {
       component: "button",
     },
   ];
-  const add = () => {
-    // console.log(store.getState());
-    // const size = store.getState()?.product.length;
-    store.dispatch({
-      type: "addProduct",
-      payload: {
-        description: description,
-        name: name,
-        price: price,
-        // key: size,
-      },
-    });
+  const onSubmit = (data: any) => {
+    dispatch(
+      productSlice.actions.addProduct({
+        description: data.description,
+        name: data.name,
+        price: data.price,
+      })
+    );
   };
   return (
-    <Col>
-      {layoutJson.map((element: any, index: any) => {
-        switch (element.component) {
-          case "input":
-            return (
-              <Col key={index}>
-                <input
-                  {...register(`${element.name}`, {
-                    required: "molimo vas da popunite polje",
-                    pattern: {
-                      value: element.pattern,
-                      message: "neispravna email adresa",
-                    },
-                  })}
-                />
-                {errors[`${element.name}`] && (
-                  <span>{errors[`${element.name}`].message}</span>
-                )}
-              </Col>
-            );
-          case "button":
-            return (
-              <div key={index}>
-                <input
-                  type="submit"
-                  value={element.name}
-                  onClick={() => console.log(errors)}
-                />
-                {errors.exampleRequired && <span>This field is required</span>}
-              </div>
-            );
-        }
-      })}
-    </Col>
+    <div className="addproduct">
+      <h1>Add Product</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Col>
+          {layoutJson.map((element: any, index: any) => {
+            switch (element.component) {
+              case "input":
+                return (
+                  <Col key={index} className="layout-div">
+                    {/* <p className="middle">{element.name}</p> */}
+                    <input
+                      className="login-input mt-1"
+                      placeholder={element.name}
+                      {...element}
+                      {...register(`${element.name}`, {
+                        required: "molimo vas da popunite polje",
+                        pattern: {
+                          value: element.pattern,
+                          message: "neispravna email adresa",
+                        },
+                      })}
+                    />
+                    {errors[`${element.name}`] && (
+                      <span className="ml-1 red">
+                        {errors[`${element.name}`].message}
+                      </span>
+                    )}
+                  </Col>
+                );
+              case "button":
+                return (
+                  <div key={index}>
+                    <input
+                      type="submit"
+                      onClick={() => console.log(errors)}
+                      className="login-input mt-2 pointer"
+                      value={element.name}
+                    />
+                    {errors.exampleRequired && (
+                      <span>This field is required</span>
+                    )}
+                  </div>
+                );
+            }
+          })}
+        </Col>
+      </form>
+    </div>
   );
 };
 

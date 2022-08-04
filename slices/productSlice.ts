@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 export interface ProductState {
   products: Product[];
+  product?: Product;
 }
 
 const initialState: ProductState = {
@@ -34,7 +35,7 @@ const initialState: ProductState = {
     },
   ],
 };
-const user = useSelector((state: any) => state.authSlice.user);
+// const user = useSelector((state: any) => state.authSlice.user);
 
 export const productSlice = createSlice({
   name: "prduct",
@@ -42,7 +43,7 @@ export const productSlice = createSlice({
   reducers: {
     addProduct: (state, action) => {
       let product: Product = {
-        key: action.payload.key,
+        key: 5,
         name: action.payload.name,
         description: action.payload.description,
         price: action.payload.price,
@@ -56,23 +57,42 @@ export const productSlice = createSlice({
     },
     addComment: (state, action) => {
       const product = state.products.find(
-        (element: Product) => element.id == action.payload.id
+        (element: Product) => element.id == action.payload.product.id
       );
+      const products: Product[] = state.products.filter(
+        (element: Product) => element.id == action.payload.product.id
+      );
+      // let newProduct = product;
+      // newProduct?.comments?.push(action.payload.comment);
+      // product?.comments?.push(action.payload.comment);
+      // debugger;
       if (product) {
         debugger;
         return {
           ...state,
-          products: [...state.products, product],
+          products: [...products, action.payload.product],
+          product: action.payload.product,
         };
       } else {
         return { ...state };
       }
     },
+    getProduct: (state, action) => {
+      const product = state.products.find(
+        (element: Product) => element.id == action.payload.id
+      );
+      return {
+        ...state,
+        product: product,
+      };
+    },
     deleteProduct: (state, action) => {
-      if (user.isAdmin) {
+      if (action.payload.isAdmin) {
         return {
           ...state,
-          products: state.products.filter((e) => e.id == action.payload.id),
+          products: [
+            ...state.products.filter((e) => e.id == action.payload.id),
+          ],
         };
       } else {
         return { ...state };
@@ -81,6 +101,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { addProduct, addComment, deleteProduct } = productSlice.actions;
+export const { addProduct, addComment, deleteProduct, getProduct } =
+  productSlice.actions;
 
 export default productSlice.reducer;

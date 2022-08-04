@@ -9,7 +9,17 @@ export interface AuthState {
 
 const initialState: AuthState = {
   login: false,
-  register: [],
+  register: [
+    {
+      name: "Kole",
+      password: "pass",
+      phone: "action.payload.phone",
+      address: "action.payload.address",
+      email: "action.payload.email",
+      lastname: "action.payload.lastname",
+      isAdmin: true,
+    },
+  ],
 };
 
 export const authSlice = createSlice({
@@ -39,7 +49,6 @@ export const authSlice = createSlice({
       );
       console.log(action.payload.username, action.payload.password);
       if (user) {
-        debugger;
         return {
           ...state,
           user: user,

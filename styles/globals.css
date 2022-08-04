@@ -58,6 +58,7 @@ a {
 .ml-5 {
   margin-left: 5rem;
 }
+
 .mt-0 {
   margin-top: 0rem;
 }
@@ -122,11 +123,13 @@ a {
   border-radius: 2rem;
   width: 10rem;
 }
+
 .item-ii {
   z-index: -1;
   padding: 1rem 2rem;
   cursor: pointer;
 }
+
 .item:hover {
   transform: translateY(-10px);
 }
@@ -138,9 +141,11 @@ a {
   width: 100%;
   align-items: flex-start;
 }
+
 .search {
   width: 20rem;
 }
+
 .dashboard {
   display: flex;
   justify-content: center;
@@ -152,27 +157,34 @@ a {
   display: flex;
   flex-wrap: wrap;
 }
+
 .space-between {
   display: flex;
   justify-content: space-around;
 }
+
 .menu {
   width: 100%;
 }
+
 .login {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 }
+
 .login-btn {
   cursor: pointer;
 }
+
 .login-content {
 }
+
 .layout-div {
   width: 20rem;
 }
+
 .login-input {
   width: 100%;
   padding: 0.5rem 1rem;
@@ -188,14 +200,11 @@ a {
   border: 1px solid red;
 }
 
-/* .profile-element {
-  display: inline-flex;
-}
-.prfile{} */
 .comment {
   width: 50%;
   height: 5rem;
 }
+
 .logout-btn {
   background-color: none !important;
 }
@@ -206,4 +215,16 @@ a {
 
 .red {
   color: red;
+}
+
+.addproduct {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.middle {
+  display: flex;
+  justify-content: center;
 }
